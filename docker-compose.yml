@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:4480"
+    ports:
+      - "4480:4480"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  apache:
+    container_name: apache
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    volumes:
+      - ./apache/html:/var/www/html/
+    labels:
+      - "traefik.http.routers.apache-router.entrypoints=web"
+      - "traefik.http.routers.apache-router.rule=Host(`resume.localhost`)"
+      - "traefik.http.routers.apache-router.service=apache-service"
+      - "traefik.http.services.apache-service.loadbalancer.server.port=80"
+  persistence:
+    container_name: persistence
+    build:
+      context: ./persistence
+      dockerfile: Dockerfile
+    ports:
+      - "9090:8080"
+    labels:
+      - "traefik.http.routers.persistence-router.entrypoints=web"
+      - "traefik.http.routers.persistence-router.rule=(Host(`resume.localhost`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.persistence-router.service=persistence-service"
+      - "traefik.http.services.persistence-service.loadbalancer.server.port=8080"
