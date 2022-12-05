@@ -1,0 +1,35 @@
+-docker
+-git bash
+-java 11
+-java 8 (just in case)
+-gradle (even though we'll most likely be using gradle wrapper per project)
+-maven (don't know if we're using maven, but just in case)
+
+database management
+-pgadmin: postgres manager
+-dbeaver: general all purpose manager (mysql, oracle, postgres, others)
+
+sample docker compose app
+- postgres
+- spring boot
+- nginx
+- traefik (reverse proxy designed for microservices)
+
+rest client
+-insomnia
+
+front end things (just in case)
+-nvm
+-node and npm
+
+text editing
+-vs code
+  -java coding pack for vscode
+  -lombok plugin for vscode
+  -neovim plugin for vscode
+notepad++
+intellij
+Spring STS
+Eclipse
+
+python

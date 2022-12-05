@@ -1,0 +1,18 @@
+[
+    {
+        "title": "Testing Code to Be Refactored",
+        "body": "First test the code at the boundery which it exposes before refactoring."
+    },
+    {
+        "title": "Configure Remote Debugging",
+        "body": "It <strike>saves time</strike> prevents wasting time in the long run."
+    },
+    {
+        "title": "Quotation",
+        "body": "\"Nothing is hard. It just depends on how much time you have.\""
+    },
+    {
+        "title": "Criticism Is A Teacher",
+        "body": "That's why Microsft and Apple release updates."
+    }
+]
