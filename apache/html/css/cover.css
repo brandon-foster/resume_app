@@ -106,3 +106,12 @@
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
+
+.no-shadow {
+  text-shadow: 0 0 black;
+}
+
+img.card-img-top {
+  width: 100%;
+  height: auto;
+}
