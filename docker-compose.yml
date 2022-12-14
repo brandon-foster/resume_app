@@ -39,6 +39,16 @@ services:
       - "traefik.http.services.notes-service.loadbalancer.server.port=80"
     depends_on:
       - notes_db
+  puzzlesolver_api:
+    container_name: puzzlesolver_api
+    image: puzzlesolver-api-spring-boot
+    ports:
+      - "9091:8080"
+    labels:
+      - "traefik.http.routers.puzzlesolver-api-router.entrypoints=web"
+      - "traefik.http.routers.puzzlesolver-api-router.rule=(Host(`resume.localhost`) && PathPrefix(`/psapi`))"
+      - "traefik.http.routers.puzzlesolver-api-router.service=puzzlesolver-api-service"
+      - "traefik.http.services.puzzlesolver-api-service.loadbalancer.server.port=8080"
   persistence:
     container_name: persistence
     build:
