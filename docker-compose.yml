@@ -25,6 +25,20 @@ services:
       - "traefik.http.routers.apache-router.rule=Host(`resume.localhost`)"
       - "traefik.http.routers.apache-router.service=apache-service"
       - "traefik.http.services.apache-service.loadbalancer.server.port=80"
+  notes:
+    container_name: notes
+    build:
+      context: ./notes
+      dockerfile: Dockerfile
+    volumes:
+      - ./notes/html:/var/www/html/
+    labels:
+      - "traefik.http.routers.notes-router.entrypoints=web"
+      - "traefik.http.routers.notes-router.rule=Host(`notes.localhost`)"
+      - "traefik.http.routers.notes-router.service=notes-service"
+      - "traefik.http.services.notes-service.loadbalancer.server.port=80"
+    depends_on:
+      - notes_db
   persistence:
     container_name: persistence
     build:
@@ -37,3 +51,28 @@ services:
       - "traefik.http.routers.persistence-router.rule=(Host(`resume.localhost`) && PathPrefix(`/api`))"
       - "traefik.http.routers.persistence-router.service=persistence-service"
       - "traefik.http.services.persistence-service.loadbalancer.server.port=8080"
+  notes_db:
+    container_name: notes_db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: MYSQL_DATABASE
+      MYSQL_USER: MYSQL_USER
+      MYSQL_PASSWORD: MYSQL_PASSWORD
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+  notes_pma:
+    container_name: notes_pma
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8888:80
+    restart: always
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+volumes:
+  mysql-volume:
