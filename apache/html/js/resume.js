@@ -3,6 +3,9 @@ const resItems = [
         heading: 'CGI Federal',
         lines: [
             {
+                text: 'Java 8, Spring Boot, Spring Data JPA, JUnit 5, Mockito, SpringBootTest, WebMvcTest, TestRestTemplate, JavaScript, ES6, Linux, Gradle, Docker, Git, Jenkins',
+            },
+            {
                 title: 'OpenShift to EKS Migration',
                 text: 'Transition microservices to EKS from OpenShift for development, UAT, and prod environments',                
                 tags: [
@@ -20,6 +23,45 @@ const resItems = [
                 title: 'Prod Support Sub Team',
                 text: 'Selected to join production support team to deliver priority enahancements and defect resolution',
                 tags: ['Java', 'PostgreSQL', 'Oracle', 'Bash', 'EKS'],
+            },
+            {
+                text: 'Developer on microservices team that provides web services to client applications for case management of applicants and beneficiaries.',
+            },
+            {
+                text: 'Provided enhancements and defect resolution of microservices using Java and Spring Boot using the Agile Scrum methodology.',
+            },
+            {
+                text: 'Authored JUnit 5 automated unit tests at service layer, and controller layer',
+            },
+            {
+                text: 'Used Mockito for isolating the system under test by mocking collaborator classes.',
+            },
+            {
+                text: 'Used Spring test features for instantiating beans and optionally load a full application context.',
+            },
+            {
+                text: 'Used JaCoCo for reporting test coverage including instruction coverage, branch coverage, and cyclomatic complexity.',
+            },
+            {
+                text: 'Involved in migrating microservices from Red Hat OpenShift to Amazon Elastic Kubernetes Service (EKS).',
+            },
+            {
+                text: 'Used Spring Data JPA with Hibernate as the JPA provider for the persistence layer.',
+            },
+            {
+                text: 'Performed requirements gathering, analysis, design, implementation, automated and UAT testing, documentation, and providing support after deployment to the production environment.',
+            },
+            {
+                text: 'Participated in Agile Scrum Methodology daily stand ups, backlog grooming, and other Agile ceremonies.',
+            },
+            {
+                text: 'Contributed a volunteer utility for frequently used text manipulation operations.',
+            },
+            {
+                text: 'Performed code reviews for pull requests.',
+            },
+            {
+                text: 'Selected to join the production support sub-team to resolve high priority issues determined by the client.',
             },
         ],
     },
@@ -48,7 +90,7 @@ function createAnchor(text, href) {
 
 function createTagList(tagArr) {
     const anchors = tagArr.map(t => {
-       console.log(t);
+        console.log(t);
         return createAnchor(t, '#');
     });
     console.log(anchors);
@@ -69,11 +111,17 @@ function createLineElem(lineObj) {
 //    colRight.classList.add('col-md-9');
 //    colRight.append(createP(lineObj.text));
 
-    wrapper.append(createTitle(lineObj.title));
+    if (lineObj.hasOwnProperty('title')) {
+        wrapper.append(createTitle(lineObj.title));
+    }
 //    wrapper.append(colLeft);
 //    wrapper.append(colRight);
-    wrapper.append(createP(lineObj.text));
-    wrapper.append(createTagList(lineObj.tags));
+    if (lineObj.hasOwnProperty('text')) {
+        wrapper.append(createP(lineObj.text));
+    }
+    if (lineObj.hasOwnProperty('tags')) {
+        wrapper.append(createTagList(lineObj.tags));
+    }
     return wrapper;
 }
 
