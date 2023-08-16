@@ -4,15 +4,27 @@ services:
     image: "traefik:v2.9"
     container_name: "traefik"
     command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
+#      - "--log.level=DEBUG"
+#      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:4480"
     ports:
       - "4480:4480"
-      - "8080:8080"
+#      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  puzzlesolver_frontend_image:
+    container_name: puzzlesolver_frontend_image
+    build:
+      context: ./puzzlesolver_frontend_image
+      dockerfile: Dockerfile
+    volumes:
+      - ./puzzlesolver_frontend_image/html:/var/www/html/
+    labels:
+      - "traefik.http.routers.puzzlesolver-frontend-image-router.entrypoints=web"
+      - "traefik.http.routers.puzzlesolver-frontend-image-router.rule=(Host(`localhost`) && PathPrefix(`/puzzlesolver-frontend`))"
+      - "traefik.http.routers.puzzlesolver-frontend-image-router.service=puzzlesolver-frontend-image-service"
+      - "traefik.http.services.puzzlesolver-frontend-image-service.loadbalancer.server.port=80"
   apache:
     container_name: apache
     build:
@@ -22,67 +34,19 @@ services:
       - ./apache/html:/var/www/html/
     labels:
       - "traefik.http.routers.apache-router.entrypoints=web"
-      - "traefik.http.routers.apache-router.rule=Host(`resume.localhost`)"
+      - "traefik.http.routers.apache-router.rule=Host(`localhost`)"
       - "traefik.http.routers.apache-router.service=apache-service"
       - "traefik.http.services.apache-service.loadbalancer.server.port=80"
-  notes:
-    container_name: notes
-    build:
-      context: ./notes
-      dockerfile: Dockerfile
-    volumes:
-      - ./notes/html:/var/www/html/
-    labels:
-      - "traefik.http.routers.notes-router.entrypoints=web"
-      - "traefik.http.routers.notes-router.rule=Host(`notes.localhost`)"
-      - "traefik.http.routers.notes-router.service=notes-service"
-      - "traefik.http.services.notes-service.loadbalancer.server.port=80"
-    depends_on:
-      - notes_db
   puzzlesolver_api:
     container_name: puzzlesolver_api
-    image: puzzlesolver-api-spring-boot
+#    image: puzzlesolver-api-spring-boot
+    build:
+      context: ./puzzlesolver-api-spring-boot
+      dockerfile: Dockerfile
     ports:
       - "9091:8080"
     labels:
       - "traefik.http.routers.puzzlesolver-api-router.entrypoints=web"
-      - "traefik.http.routers.puzzlesolver-api-router.rule=(Host(`resume.localhost`) && PathPrefix(`/psapi`))"
+      - "traefik.http.routers.puzzlesolver-api-router.rule=(Host(`localhost`) && PathPrefix(`/psapi`))"
       - "traefik.http.routers.puzzlesolver-api-router.service=puzzlesolver-api-service"
       - "traefik.http.services.puzzlesolver-api-service.loadbalancer.server.port=8080"
-  persistence:
-    container_name: persistence
-    build:
-      context: ./persistence
-      dockerfile: Dockerfile
-    ports:
-      - "9090:8080"
-    labels:
-      - "traefik.http.routers.persistence-router.entrypoints=web"
-      - "traefik.http.routers.persistence-router.rule=(Host(`resume.localhost`) && PathPrefix(`/api`))"
-      - "traefik.http.routers.persistence-router.service=persistence-service"
-      - "traefik.http.services.persistence-service.loadbalancer.server.port=8080"
-  notes_db:
-    container_name: notes_db
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: MYSQL_DATABASE
-      MYSQL_USER: MYSQL_USER
-      MYSQL_PASSWORD: MYSQL_PASSWORD
-    volumes:
-      - mysql-volume:/var/lib/mysql
-    ports:
-      - 3306:3306
-  notes_pma:
-    container_name: notes_pma
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 8888:80
-    restart: always
-    environment:
-      PMA_HOST: notes_db
-    depends_on:
-      - notes_db
-volumes:
-  mysql-volume:
