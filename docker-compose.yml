@@ -28,22 +28,18 @@ services:
       - "traefik.http.routers.puzzlesolver-frontend-router.middlewares=puzzlesolver-frontend-stripprefix"
       - "traefik.http.middlewares.puzzlesolver-frontend-stripprefix.stripprefix.prefixes=/puzzlesolver"
       - "traefik.http.middlewares.puzzlesolver-frontend-stripprefix.stripprefix.forceSlash=false"
-
-  apache:
-    container_name: apache
+  node:
+    container_name: node
     build:
-      context: ./apache
+      context: ./resume_react_server
       dockerfile: Dockerfile
-    volumes:
-      - ./apache/html:/var/www/html/
     labels:
-      - "traefik.http.routers.apache-router.entrypoints=web"
-      - "traefik.http.routers.apache-router.rule=Host(`localhost`)"
-      - "traefik.http.routers.apache-router.service=apache-service"
-      - "traefik.http.services.apache-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.resume-react-server-router.entrypoints=web"
+      - "traefik.http.routers.resume-react-server-router.rule=Host(`localhost`)"
+      - "traefik.http.routers.resume-react-server-router.service=resume-react-server-service"
+      - "traefik.http.services.resume-react-server-service.loadbalancer.server.port=3001"
   puzzlesolver_api:
     container_name: puzzlesolver_api
-#    image: puzzlesolver-api-spring-boot
     build:
       context: ./puzzlesolver-api-spring-boot
       dockerfile: Dockerfile
