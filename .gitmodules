@@ -1,0 +1,9 @@
+[submodule "puzzlesolver-api-spring-boot"]
+	path = puzzlesolver-api-spring-boot
+	url = git@bitbucket.org:brandon-foster/puzzlesolver-api-spring-boot.git
+[submodule "puzzlesolver-frontend"]
+	path = puzzlesolver-frontend
+	url = git@bitbucket.org:brandon-foster/puzzlesolver-frontend.git
+[submodule "resume_react_server"]
+	path = resume_react_server
+	url = git@bitbucket.org:brandon-foster/resume_react_server.git
