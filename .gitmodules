@@ -1,0 +1,3 @@
+[submodule "puzzlesolver-api-spring-boot"]
+	path = puzzlesolver-api-spring-boot
+	url = git@bitbucket.org:brandon-foster/puzzlesolver-api-spring-boot.git
