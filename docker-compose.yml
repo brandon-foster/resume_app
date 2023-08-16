@@ -13,18 +13,22 @@ services:
 #      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-  puzzlesolver_frontend_image:
-    container_name: puzzlesolver_frontend_image
+  puzzlesolver-frontend:
+    container_name: puzzlesolver-frontend
     build:
-      context: ./puzzlesolver_frontend_image
+      context: ./puzzlesolver-frontend
       dockerfile: Dockerfile
     volumes:
-      - ./puzzlesolver_frontend_image/html:/var/www/html/
+      - ./puzzlesolver-frontend/html:/var/www/html/
     labels:
-      - "traefik.http.routers.puzzlesolver-frontend-image-router.entrypoints=web"
-      - "traefik.http.routers.puzzlesolver-frontend-image-router.rule=(Host(`localhost`) && PathPrefix(`/puzzlesolver-frontend`))"
-      - "traefik.http.routers.puzzlesolver-frontend-image-router.service=puzzlesolver-frontend-image-service"
-      - "traefik.http.services.puzzlesolver-frontend-image-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.puzzlesolver-frontend-router.entrypoints=web"
+      - "traefik.http.routers.puzzlesolver-frontend-router.rule=(Host(`localhost`) && PathPrefix(`/puzzlesolver`))"
+      - "traefik.http.routers.puzzlesolver-frontend-router.service=puzzlesolver-frontend-service"
+      - "traefik.http.services.puzzlesolver-frontend-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.puzzlesolver-frontend-router.middlewares=puzzlesolver-frontend-stripprefix"
+      - "traefik.http.middlewares.puzzlesolver-frontend-stripprefix.stripprefix.prefixes=/puzzlesolver"
+      - "traefik.http.middlewares.puzzlesolver-frontend-stripprefix.stripprefix.forceSlash=false"
+
   apache:
     container_name: apache
     build:
