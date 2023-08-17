@@ -7,3 +7,6 @@
 [submodule "resume_react_server"]
 	path = resume_react_server
 	url = git@bitbucket.org:brandon-foster/resume_react_server.git
+[submodule "note_app"]
+	path = note_app
+	url = git@bitbucket.org:brandon-foster/note_app.git
