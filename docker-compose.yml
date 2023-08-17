@@ -53,3 +53,32 @@ services:
       - "traefik.http.routers.puzzlesolver-api-router.rule=(Host(`localhost`) && PathPrefix(`/psapi`))"
       - "traefik.http.routers.puzzlesolver-api-router.service=puzzlesolver-api-service"
       - "traefik.http.services.puzzlesolver-api-service.loadbalancer.server.port=8080"
+  defaultroot:
+    container_name: "note-app-defaultroot"
+    build:
+      context: ./note_app/defaultroot
+      dockerfile: Dockerfile
+    volumes:
+      - ./note_app/defaultroot/data:/usr/src/app/data
+    labels:
+      - "traefik.http.routers.note-app-defaultroot-router.entrypoints=web"
+      - "traefik.http.routers.note-app-defaultroot-router.rule=PathPrefix(`/notes`)"
+      - "traefik.http.routers.note-app-defaultroot-router.service=note-app-defaultroot-service"
+      - "traefik.http.services.note-app-defaultroot-service.loadbalancer.server.port=3000"
+    environment:
+      - BASE_DIR=/notes
+  software:
+    container_name: "software"
+    build:
+      context: ./note_app/ui
+      dockerfile: Dockerfile
+    volumes:
+      - ./software/data:/usr/src/app/data
+    labels:
+      - "traefik.http.routers.note-app-software-router.entrypoints=web"
+      - "traefik.http.routers.note-app-software-router.rule=PathPrefix(`/notes/software`)"
+      - "traefik.http.routers.note-app-software-router.service=note-app-software-service"
+      - "traefik.http.services.note-app-software-service.loadbalancer.server.port=3000"
+    environment:
+      - BASE_DIR=/notes/software
+      - APP_NAME=Software
