@@ -73,7 +73,7 @@ services:
       context: ./note_app/ui
       dockerfile: Dockerfile
     volumes:
-      - ./software/data:/usr/src/app/data
+      - ./note_app/software/data:/usr/src/app/data
     labels:
       - "traefik.http.routers.note-app-software-router.entrypoints=web"
       - "traefik.http.routers.note-app-software-router.rule=PathPrefix(`/notes/software`)"
