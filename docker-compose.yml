@@ -25,6 +25,7 @@ services:
       - "traefik.http.routers.puzzlesolver-frontend-router.rule=(Host(`localhost`) && PathPrefix(`/puzzlesolver`))"
       - "traefik.http.routers.puzzlesolver-frontend-router.service=puzzlesolver-frontend-service"
       - "traefik.http.services.puzzlesolver-frontend-service.loadbalancer.server.port=80"
+      # Add trailing slash. Strip prefix before routing.
       - "traefik.http.routers.puzzlesolver-frontend-router.middlewares=strip-prefix"
       - "traefik.http.middlewares.strip-prefix.chain.middlewares=strip-prefix-1,strip-prefix-2"
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.regex=^(https?://[^/]+/[a-z0-9_]+)$$"
@@ -82,3 +83,20 @@ services:
     environment:
       - BASE_DIR=/notes/software
       - APP_NAME=Software
+  keyboard-ui:
+    container_name: keyboard-ui
+    build:
+      context: ./keyboard_ui
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.keyboard-ui-router.entrypoints=web"
+      - "traefik.http.routers.keyboard-ui-router.rule=(Host(`localhost`) && PathPrefix(`/keyboard`))"
+      - "traefik.http.routers.keyboard-ui-router.service=keyboard-ui-service"
+      - "traefik.http.services.keyboard-ui-service.loadbalancer.server.port=3333"
+      # Add trailing slash. Strip prefix before routing.
+      - "traefik.http.routers.keyboard-ui-router.middlewares=strip-prefix"
+      - "traefik.http.middlewares.strip-prefix.chain.middlewares=strip-prefix-1,strip-prefix-2"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.regex=^(https?://[^/]+/[a-z0-9_]+)$$"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.replacement=$${1}/"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
+      - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"

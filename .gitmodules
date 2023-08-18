@@ -10,3 +10,6 @@
 [submodule "note_app"]
 	path = note_app
 	url = git@bitbucket.org:brandon-foster/note_app.git
+[submodule "keyboard_ui"]
+	path = keyboard_ui
+	url = git@bitbucket.org:brandon-foster/keyboard_ui.git
