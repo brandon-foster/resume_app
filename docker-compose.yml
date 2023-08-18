@@ -22,7 +22,7 @@ services:
       - ./puzzlesolver-frontend/html:/var/www/html/
     labels:
       - "traefik.http.routers.puzzlesolver-frontend-router.entrypoints=web"
-      - "traefik.http.routers.puzzlesolver-frontend-router.rule=(Host(`localhost`) && PathPrefix(`/puzzlesolver`))"
+      - "traefik.http.routers.puzzlesolver-frontend-router.rule=(PathPrefix(`/puzzlesolver`))"
       - "traefik.http.routers.puzzlesolver-frontend-router.service=puzzlesolver-frontend-service"
       - "traefik.http.services.puzzlesolver-frontend-service.loadbalancer.server.port=80"
       # Add trailing slash. Strip prefix before routing.
@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.http.routers.resume-react-server-router.entrypoints=web"
-      - "traefik.http.routers.resume-react-server-router.rule=Host(`localhost`)"
+      - "traefik.http.routers.resume-react-server-router.rule=PathPrefix(`/`)"
       - "traefik.http.routers.resume-react-server-router.service=resume-react-server-service"
       - "traefik.http.services.resume-react-server-service.loadbalancer.server.port=3001"
   puzzlesolver_api:
@@ -51,7 +51,7 @@ services:
       - "9091:8080"
     labels:
       - "traefik.http.routers.puzzlesolver-api-router.entrypoints=web"
-      - "traefik.http.routers.puzzlesolver-api-router.rule=(Host(`localhost`) && PathPrefix(`/psapi`))"
+      - "traefik.http.routers.puzzlesolver-api-router.rule=(PathPrefix(`/psapi`))"
       - "traefik.http.routers.puzzlesolver-api-router.service=puzzlesolver-api-service"
       - "traefik.http.services.puzzlesolver-api-service.loadbalancer.server.port=8080"
   defaultroot:
@@ -90,7 +90,7 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.http.routers.keyboard-ui-router.entrypoints=web"
-      - "traefik.http.routers.keyboard-ui-router.rule=(Host(`localhost`) && PathPrefix(`/keyboard`))"
+      - "traefik.http.routers.keyboard-ui-router.rule=(PathPrefix(`/keyboard`))"
       - "traefik.http.routers.keyboard-ui-router.service=keyboard-ui-service"
       - "traefik.http.services.keyboard-ui-service.loadbalancer.server.port=3333"
       # Add trailing slash. Strip prefix before routing.
