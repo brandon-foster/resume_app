@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   traefik:
+    restart: always
     image: "traefik:v2.9"
     container_name: "traefik"
     command:
@@ -14,6 +15,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
   puzzlesolver-frontend:
+    restart: always
     container_name: puzzlesolver-frontend
     build:
       context: ./puzzlesolver-frontend
@@ -33,6 +35,7 @@ services:
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
       - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"
   node:
+    restart: always
     container_name: node
     build:
       context: ./resume_react_server
@@ -43,6 +46,7 @@ services:
       - "traefik.http.routers.resume-react-server-router.service=resume-react-server-service"
       - "traefik.http.services.resume-react-server-service.loadbalancer.server.port=3001"
   puzzlesolver_api:
+    restart: always
     container_name: puzzlesolver_api
     build:
       context: ./puzzlesolver-api-spring-boot
@@ -55,6 +59,7 @@ services:
       - "traefik.http.routers.puzzlesolver-api-router.service=puzzlesolver-api-service"
       - "traefik.http.services.puzzlesolver-api-service.loadbalancer.server.port=8080"
   defaultroot:
+    restart: always
     container_name: "note-app-defaultroot"
     build:
       context: ./note_app/defaultroot
@@ -69,6 +74,7 @@ services:
     environment:
       - BASE_DIR=/notes
   software:
+    restart: always
     container_name: "software"
     build:
       context: ./note_app/ui
@@ -84,6 +90,7 @@ services:
       - BASE_DIR=/notes/software
       - APP_NAME=Software
   keyboard-ui:
+    restart: always
     container_name: keyboard-ui
     build:
       context: ./keyboard_ui
