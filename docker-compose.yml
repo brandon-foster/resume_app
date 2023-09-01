@@ -7,9 +7,9 @@ services:
 #      - "--log.level=DEBUG"
 #      - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:4480"
+      - "--entrypoints.web.address=:4580"
     ports:
-      - "4480:4480"
+      - "4580:4580"
 #      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
