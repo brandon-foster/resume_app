@@ -108,6 +108,7 @@ services:
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
       - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"
   url_ui:
+    restart: always
     container_name: url_ui
     build:
       context: ./url_app/url_ui
@@ -125,6 +126,7 @@ services:
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
       - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"
   url_service:
+    restart: always
     container_name: url_service
     build:
       context: ./url_app/url_service
