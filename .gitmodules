@@ -13,3 +13,6 @@
 [submodule "keyboard_ui"]
 	path = keyboard_ui
 	url = git@bitbucket.org:brandon-foster/keyboard_ui.git
+[submodule "url_app"]
+	path = url_app
+	url = git@bitbucket.org:brandon-foster/url_app.git
