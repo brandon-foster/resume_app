@@ -107,3 +107,30 @@ services:
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.replacement=$${1}/"
       - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
       - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"
+  url_ui:
+    container_name: url_ui
+    build:
+      context: ./url_app/url_ui
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.url-ui-router.entrypoints=web"
+      - "traefik.http.routers.url-ui-router.rule=PathPrefix(`/su`)"
+      - "traefik.http.routers.url-ui-router.service=url-ui-service"
+      - "traefik.http.services.url-ui-service.loadbalancer.server.port=3333"
+      # Add trailing slash. Strip prefix before routing.
+      - "traefik.http.routers.url-ui-router.middlewares=strip-prefix"
+      - "traefik.http.middlewares.strip-prefix.chain.middlewares=strip-prefix-1,strip-prefix-2"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.regex=^(https?://[^/]+/[a-z0-9_]+)$$"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.replacement=$${1}/"
+      - "traefik.http.middlewares.strip-prefix-1.redirectregex.permanent=true"
+      - "traefik.http.middlewares.strip-prefix-2.stripprefixregex.regex=/[a-z0-9_]+"
+  url_service:
+    container_name: url_service
+    build:
+      context: ./url_app/url_service
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.url-service-router.entrypoints=web"
+      - "traefik.http.routers.url-service-router.rule=PathPrefix(`/l`)"
+      - "traefik.http.routers.url-service-router.service=url-service-service"
+      - "traefik.http.services.url-service-service.loadbalancer.server.port=8080"
